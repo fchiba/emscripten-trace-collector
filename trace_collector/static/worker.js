@@ -40,10 +40,13 @@ function attemptClose() {
 };
 
 self.addEventListener("message", function(e) {
-    var message = e.data;
+    var message = JSON.parse(e.data);
     var cmd = message.cmd;
     if (cmd == "post") {
-      send(message.entry);
+      var entries = message.entries;
+      for(var i = 0; i < entries.length; i++) {
+        send(entries[i]);
+      }
     } else if (cmd == "configure") {
       collector_url = message.url + 'api/v1/upload';
       data_version = message.data_version;
